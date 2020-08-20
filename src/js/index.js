@@ -1,6 +1,8 @@
 import Search from './models/Search';
-import Recipe from './models/Recipe';   
+import Recipe from './models/Recipe';
+import List from './models/List';
 import * as searchView from './views/searchView';
+import * as recipeView from './views/recipeView';
 import { element, renderLoader, clearLoader } from './views/base';
 
 /*
@@ -53,6 +55,7 @@ element.searchForm.addEventListener('submit', e => {
     controlSearch();
 });
 
+
 element.searchResPages.addEventListener('click', e => {
     const button = e.target.closest('.btn-inline');
     if (button){
@@ -71,24 +74,35 @@ element.searchResPages.addEventListener('click', e => {
 const controlRecipe = async () => {
     // Get ID from url
     const id = window.location.hash.replace('#', '');
-    console.log(id);
+    // console.log(id);
 
     if (id){
         // Prepare UI for changes
+        recipeView.clearRecipe();
+        renderLoader(element.recipe);
+
+        // Highlight selected search item
+        if (state.search){
+            searchView.highlightSelected(id);
+        }
 
         try{
             // Create new recipe object
             state.recipe = new Recipe(id);
 
-            // Get Recipe data
+            // Get Recipe data and parse ingredient
             await state.recipe.getRecipe();
+            state.recipe.parseIngredients();
 
             // Calculate servings and time
             state.recipe.calcTime();
             state.recipe.calcServings();
 
+            // console.log(state.recipe);
+
             // Render recipe
-            console.log(state.recipe);
+            clearLoader();
+            recipeView.renderRecipe(state.recipe);
         } catch(error){
             alert('Error processing recipe :(');
         }
@@ -103,3 +117,21 @@ const controlRecipe = async () => {
 
 ['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
 
+
+// HANDLING RECIPE BUTTON CLICKS
+
+element.recipe.addEventListener('click', e => {
+    if (e.target.matches('.btn-decrease, .btn-decrease *')){
+        // Decrease button is clicked
+        if (state.recipe.servings > 1){
+            state.recipe.updateServings('dec');
+            recipeView.updateServingsIngredients(state.recipe);
+        } 
+    } else if (e.target.matches('.btn-increase, .btn-increase *')){
+        // Increase button is clicked
+        state.recipe.updateServings('inc');
+        recipeView.updateServingsIngredients(state.recipe);
+    }
+})
+
+window.L = new List();
