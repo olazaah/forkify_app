@@ -2,3 +2,4 @@
 [0819/202956.683:ERROR:filesystem_win.cc(129)] GetFileAttributes C:\Users\Olazaah\AppData\Local\Microsoft\Edge Dev\User Data\Crashpad\attachments\99480e8e-0294-41b7-b95a-3342bacfec61: The system cannot find the path specified. (0x3)
 [0819/202956.686:ERROR:filesystem_win.cc(129)] GetFileAttributes C:\Users\Olazaah\AppData\Local\Microsoft\Edge Dev\User Data\Crashpad\attachments\ac76dfb6-c5e2-4cd7-bdd9-fb9ef69bc305: The system cannot find the path specified. (0x3)
 [0819/202956.696:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[0822/150429.050:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
